@@ -10,7 +10,7 @@ export default function S13_DhruvikCampaign() {
     <section
       id="dhruvik"
       data-section="dhruvik-campaign"
-      className="bg-surface section-padding"
+      className="relative z-20 bg-surface section-padding"
     >
       <div className="content-max">
         {/* Campaign header */}
@@ -22,8 +22,8 @@ export default function S13_DhruvikCampaign() {
           <div className="rule-accent mt-8" />
         </div>
 
-        {/* Full-width video composition */}
-        <div className="relative w-full aspect-video bg-dark overflow-hidden mb-12">
+        {/* Centered video composition with 100% original proportion (9:16 vertical) */}
+        <div className="relative w-full max-w-[440px] aspect-[9/16] bg-dark overflow-hidden mb-12 mx-auto shadow-lg">
           <video
             ref={videoRef}
             src={MEDIA.campaigns.dhruvik.video}

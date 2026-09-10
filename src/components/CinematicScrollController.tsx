@@ -644,6 +644,17 @@ export default function CinematicScrollController() {
       );
 
       campaignSections.forEach((section) => {
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top bottom',
+          onEnter: () => {
+            if (urvashiLayer) gsap.set(urvashiLayer, { autoAlpha: 0 });
+          },
+          onEnterBack: () => {
+            if (urvashiLayer) gsap.set(urvashiLayer, { autoAlpha: 0 });
+          },
+        });
+
         const heading = section.querySelector('.heading-editorial');
         if (heading) {
           gsap.from(heading, {

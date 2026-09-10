@@ -11,7 +11,7 @@ export default function S12_NidhiCampaign() {
     <section
       id="nidhi"
       data-section="nidhi-campaign"
-      className="bg-background section-padding"
+      className="relative z-20 bg-background section-padding"
     >
       <div className="content-max">
         {/* Campaign header */}
@@ -24,11 +24,11 @@ export default function S12_NidhiCampaign() {
         </div>
 
         {/* Reverse editorial layout — video first on desktop */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           {/* Video + Stills */}
-          <div className="lg:col-span-7">
-            {/* Campaign Video */}
-            <div className="relative w-full aspect-video bg-dark overflow-hidden">
+          <div className="lg:col-span-7 flex flex-col items-center lg:items-start">
+            {/* Campaign Video — 100% original proportion (9:16 vertical) */}
+            <div className="relative w-full max-w-[440px] aspect-[9/16] bg-dark overflow-hidden shadow-lg">
               <video
                 ref={videoRef}
                 src={MEDIA.campaigns.nidhi.video}
@@ -40,16 +40,16 @@ export default function S12_NidhiCampaign() {
               />
             </div>
 
-            {/* Supporting campaign stills */}
-            <div className="grid grid-cols-4 gap-1 mt-1">
+            {/* Supporting campaign stills moved down below stretched video */}
+            <div className="grid grid-cols-4 gap-2 mt-4 w-full max-w-[440px]">
               {MEDIA.campaigns.nidhi.stills.slice(0, 4).map((still, i) => (
-                <div key={i} className="relative aspect-video overflow-hidden">
+                <div key={i} className="relative aspect-video overflow-hidden bg-dark/10">
                   <Image
                     src={still}
                     alt={`Nidhi campaign frame ${i + 1}`}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 1024px) 25vw, 15vw"
+                    sizes="(max-width: 1024px) 25vw, 12vw"
                   />
                 </div>
               ))}
@@ -57,9 +57,9 @@ export default function S12_NidhiCampaign() {
           </div>
 
           {/* Quote + Content */}
-          <div className="lg:col-span-5 flex flex-col justify-center">
+          <div className="lg:col-span-5 flex flex-col justify-start">
             {/* Primary Quote */}
-            <div className="mb-10">
+            <div className="mb-8">
               <span className="quote-mark">&ldquo;</span>
               <blockquote className="quote-editorial -mt-6">
                 Luxury isn&apos;t measured by the square feet&hellip;<br />
@@ -68,29 +68,28 @@ export default function S12_NidhiCampaign() {
             </div>
 
             {/* Campaign hero image */}
-            <div className="relative aspect-[3/4] overflow-hidden mb-8">
+            <div className="relative aspect-[3/4] overflow-hidden mb-6">
               <Image
                 src={MEDIA.campaigns.nidhi.hero}
                 alt="Nidhi at Harmony Harikesh"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 35vw"
+                priority
               />
             </div>
             <span className="text-caption">Nidhi — Harmony Harikesh</span>
 
             {/* Placeholder for video line extraction */}
-            <div className="mt-10 pt-8 border-t border-line">
-              <p className="text-metadata mb-3">From the Campaign</p>
-              {/* VIDEO LINE PLACEHOLDER — Insert extracted line from Nidhi's video here */}
+            <div className="mt-8 pt-6 border-t border-line">
+              <p className="text-metadata mb-2">From the Campaign</p>
               <p className="text-muted text-sm italic leading-relaxed">
                 &ldquo;—&rdquo;
               </p>
             </div>
 
             {/* Placeholder for secondary quote */}
-            <div className="mt-6">
-              {/* SECONDARY QUOTE PLACEHOLDER */}
+            <div className="mt-4">
               <p className="text-light text-xs italic">
                 &ldquo;—&rdquo;
               </p>

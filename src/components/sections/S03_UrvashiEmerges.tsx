@@ -21,7 +21,7 @@ export default function S03_UrvashiEmerges() {
       <div
         ref={layerRef}
         id="urvashi-character-layer"
-        className="fixed inset-0 z-50 flex items-end justify-center pointer-events-none will-change-transform"
+        className="fixed inset-0 z-10 flex items-end justify-center pointer-events-none will-change-transform"
         data-urvashi-state="idle"
         style={{
           opacity: 0,

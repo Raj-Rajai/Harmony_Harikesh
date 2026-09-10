@@ -11,7 +11,7 @@ export default function S11_RJKunalCampaign() {
     <section
       id="rj-kunal"
       data-section="rj-kunal-campaign"
-      className="bg-surface section-padding"
+      className="relative z-20 bg-surface section-padding"
     >
       <div className="content-max">
         {/* Campaign header */}
@@ -24,9 +24,9 @@ export default function S11_RJKunalCampaign() {
         </div>
 
         {/* Editorial layout — asymmetric */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
-          {/* Campaign hero image */}
-          <div className="lg:col-span-5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          {/* Campaign hero image + Stills moved down where pointed */}
+          <div className="lg:col-span-5 flex flex-col">
             <div className="relative aspect-[3/4] overflow-hidden">
               <Image
                 src={MEDIA.campaigns.rjKunal.hero}
@@ -34,23 +34,39 @@ export default function S11_RJKunalCampaign() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 40vw"
+                priority
               />
             </div>
-            <span className="text-caption block mt-4">RJ Kunalbhai — Harmony Harikesh</span>
+            <span className="text-caption block mt-4 mb-6">RJ Kunalbhai — Harmony Harikesh</span>
+
+            {/* Supporting campaign stills moved down below hero image */}
+            <div className="grid grid-cols-3 gap-2">
+              {MEDIA.campaigns.rjKunal.stills.slice(0, 3).map((still, i) => (
+                <div key={i} className="relative aspect-video overflow-hidden bg-dark/10">
+                  <Image
+                    src={still}
+                    alt={`RJ Kunal campaign frame ${i + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 33vw, 15vw"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Quote + Video */}
-          <div className="lg:col-span-7 flex flex-col justify-center">
+          <div className="lg:col-span-7 flex flex-col justify-start">
             {/* Quote */}
-            <div className="mb-12">
+            <div className="mb-8">
               <span className="quote-mark">&ldquo;</span>
               <blockquote className="quote-editorial -mt-6">
                 Ek Ghar ane Luxury Address Vachche No Difference.
               </blockquote>
             </div>
 
-            {/* Campaign Video */}
-            <div className="relative w-full aspect-video bg-dark overflow-hidden">
+            {/* Campaign Video — 100% original proportion (9:16 vertical) */}
+            <div className="relative w-full max-w-[440px] aspect-[9/16] bg-dark overflow-hidden mx-auto lg:mx-0 shadow-lg">
               <video
                 ref={videoRef}
                 src={MEDIA.campaigns.rjKunal.video}
@@ -60,21 +76,6 @@ export default function S11_RJKunalCampaign() {
                 poster={MEDIA.campaigns.rjKunal.hero}
                 playsInline
               />
-            </div>
-
-            {/* Supporting campaign stills */}
-            <div className="grid grid-cols-3 gap-1 mt-1">
-              {MEDIA.campaigns.rjKunal.stills.slice(0, 3).map((still, i) => (
-                <div key={i} className="relative aspect-video overflow-hidden">
-                  <Image
-                    src={still}
-                    alt={`RJ Kunal campaign frame ${i + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 33vw, 20vw"
-                  />
-                </div>
-              ))}
             </div>
           </div>
         </div>
