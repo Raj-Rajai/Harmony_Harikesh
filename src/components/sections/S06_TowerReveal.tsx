@@ -18,7 +18,7 @@ export default function S06_TowerReveal() {
         className="tower-reveal-mask relative w-full h-full overflow-hidden will-change-transform"
         data-reveal-origin="finger"
         style={{
-          clipPath: 'circle(0% at 30% 50%)',
+          clipPath: 'circle(0% at 50% 50%)',
           opacity: 0,
         }}
       >

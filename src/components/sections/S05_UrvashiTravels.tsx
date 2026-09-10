@@ -10,7 +10,7 @@ export default function S05_UrvashiTravels() {
       id="urvashi-travels"
       data-section="urvashi-travels"
       ref={stageRef}
-      className="relative w-full h-[150vh] overflow-hidden bg-black"
+      className="relative w-full h-[180vh] bg-black"
     >
       {/* 
         Scroll Stage: The persistent Urvashi foreground layer travels 
@@ -20,11 +20,11 @@ export default function S05_UrvashiTravels() {
         <div className="absolute inset-0 bg-gradient-to-b from-black via-[#111111] to-[#FAF7F2] transition-colors" />
         
         {/* Subtle typography passing in background */}
-        <div className="travel-backdrop-text text-center px-6 opacity-0 will-change-transform">
+        <div className="travel-backdrop-text relative z-10 text-center px-6 will-change-transform">
           <span className="text-[10px] tracking-[0.3em] uppercase text-[#C09A6B] block mb-2 font-mono">
             THE REVEAL
           </span>
-          <p className="heading-editorial text-2xl md:text-4xl text-white/80 font-light">
+          <p className="heading-editorial text-2xl md:text-4xl text-white/90 font-light">
             An Iconic Horizon Unfolds
           </p>
         </div>

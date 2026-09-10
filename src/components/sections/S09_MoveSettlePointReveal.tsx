@@ -28,7 +28,7 @@ export default function S09_MoveSettlePointReveal() {
         <div
           className="reveal-content-container relative w-full opacity-0 will-change-transform"
           style={{
-            clipPath: 'circle(0% at 30% 40%)',
+            clipPath: 'circle(0% at 50% 50%)',
           }}
         >
           <div className="content-max">

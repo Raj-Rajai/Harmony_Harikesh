@@ -266,16 +266,19 @@ export default function CinematicScrollController() {
       */
       artworkTimeline.fromTo(urvashiLayer, {
         autoAlpha: 1,
+        opacity: 1,
         x: mobile ? '-6vw' : '-16vw',
         y: mobile ? '-10vh' : '-12vh',
         scale: mobile ? 0.84 : 0.92,
         rotation: 0,
       }, {
         autoAlpha: 1,
-        x: mobile ? '-6vw' : '-16vw',
-        y: mobile ? '12vh' : '15vh',
-        scale: mobile ? 0.86 : 0.94,
-        ease: 'none',
+        opacity: 1,
+        x: mobile ? '-28vw' : '-33vw',
+        y: mobile ? '12vh' : '14vh',
+        scale: mobile ? 0.82 : 0.88,
+        rotation: -1.5,
+        ease: 'power1.out',
         duration: 1,
       }, 0);
 
@@ -304,7 +307,9 @@ export default function CinematicScrollController() {
       }
 
       /* ══════════════════════════════════════════════════════
-         05 — URVASHI TRAVELS WITH SCROLL (LEFT-CENTER → FAR-LEFT ANCHOR)
+         05 — URVASHI TRAVELS WITH SCROLL (THE REVEAL)
+         Holds at 100% opacity in frame before the red line,
+         fades through middle opacity (50%), then to 0% at the red line.
          ══════════════════════════════════════════════════════ */
       if (sTravel) {
         const travelText = sTravel.querySelector('.travel-backdrop-text');
@@ -312,38 +317,73 @@ export default function CinematicScrollController() {
         const travelTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: sTravel,
-            start: 'top 80%',
-            end: 'bottom 20%',
-            scrub: 1,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.8,
+            onLeave: () => {
+              gsap.set(urvashiLayer, { autoAlpha: 0, opacity: 0, visibility: 'hidden' });
+            },
           },
         });
 
+        /* Text reveals immediately on entry */
+        if (travelText) {
+          travelTimeline.to(travelText, {
+            opacity: 1,
+            y: -15,
+            duration: 0.25,
+            ease: 'power2.out',
+          }, 0);
+        }
+
+        /* 1. Holds at 100% opacity before the red line */
         travelTimeline
-          /* Continuous fluid motion from S04 position to her S06 fingertip pointing position */
           .to(urvashiLayer, {
+            opacity: 1,
             autoAlpha: 1,
             x: mobile ? '-28vw' : '-33vw',
             y: mobile ? '12vh' : '14vh',
             scale: mobile ? 0.82 : 0.88,
             rotation: -1.5,
-            duration: 1,
+            duration: 0.45,
+            ease: 'none',
+          }, 0)
+
+          /* 2. Reaching red line: smooth fading through middle opacity (50%) */
+          .to(urvashiLayer, {
+            opacity: 0.5,
+            duration: 0.3,
             ease: 'power1.inOut',
           })
-          /* Backdrop text reveal */
-          .to(travelText, {
-            opacity: 1,
-            y: -20,
-            duration: 0.4,
-            ease: 'power2.out',
-          }, 0.2);
+
+          /* 3. At / after the red line: fades completely to 0% opacity (autoAlpha: 0) */
+          .to(urvashiLayer, {
+            autoAlpha: 0,
+            opacity: 0,
+            duration: 0.25,
+            ease: 'power1.out',
+          });
       }
 
       /* ══════════════════════════════════════════════════════
-         06 — TOWER REVEAL (ACTIVATED AT FINGERTIP)
+         06 — TOWER REVEAL (ELEVATION OF THE THREE TOWERS)
+         Urvashi is now faded out; reveal unfolds smoothly.
          ══════════════════════════════════════════════════════ */
       if (sTower) {
         const towerMask = sTower.querySelector('.tower-reveal-mask') as HTMLElement;
         const towerImgContainer = sTower.querySelector('.tower-img-container') as HTMLElement;
+
+        /* Strictly ensure Urvashi stays hidden */
+        ScrollTrigger.create({
+          trigger: sTower,
+          start: 'top bottom',
+          onEnter: () => {
+            gsap.set(urvashiLayer, { autoAlpha: 0, opacity: 0, visibility: 'hidden' });
+          },
+          onEnterBack: () => {
+            gsap.set(urvashiLayer, { autoAlpha: 0, opacity: 0, visibility: 'hidden' });
+          },
+        });
 
         if (towerMask) {
           const towerTimeline = gsap.timeline({
@@ -352,16 +392,10 @@ export default function CinematicScrollController() {
               start: 'top 85%',
               end: 'bottom 15%',
               scrub: 1,
-              onLeave: () => {
-                gsap.set(urvashiLayer, { autoAlpha: 0 });
-              },
               onUpdate: (self) => {
-                if (urvashiWrapper && towerMask) {
-                  const coords = getFingertipCoordinates(urvashiWrapper, towerMask);
-                  const radius = self.progress * 160;
-                  towerMask.style.clipPath = `circle(${radius}% at ${coords.x}% ${coords.y}%)`;
-                  towerMask.style.opacity = `${Math.min(1, self.progress * 2)}`;
-                }
+                const radius = self.progress * 160;
+                towerMask.style.clipPath = `circle(${radius}% at 50% 50%)`;
+                towerMask.style.opacity = `${Math.min(1, self.progress * 2.5)}`;
               },
             },
           });
@@ -373,13 +407,6 @@ export default function CinematicScrollController() {
             duration: 1,
             ease: 'none',
           });
-
-          /* Fade out Urvashi gracefully as Architecture takes full control */
-          towerTimeline.to(urvashiLayer, {
-            autoAlpha: 0,
-            duration: 0.4,
-            ease: 'power2.in',
-          }, 0.6);
         }
       }
 
@@ -476,10 +503,22 @@ export default function CinematicScrollController() {
       }
 
       /* ══════════════════════════════════════════════════════
-         08 — URVASHI RETURNS (SAME X-AXIS / NEW LIFESTYLE Y)
+         08 — CHAPTER 02 TRANSITION (URVASHI REMOVED)
          ══════════════════════════════════════════════════════ */
       if (sReturns) {
         const returnText = sReturns.querySelector('.return-backdrop-text');
+
+        /* Strictly keep Urvashi hidden */
+        ScrollTrigger.create({
+          trigger: sReturns,
+          start: 'top bottom',
+          onEnter: () => {
+            gsap.set(urvashiLayer, { autoAlpha: 0, opacity: 0, visibility: 'hidden' });
+          },
+          onEnterBack: () => {
+            gsap.set(urvashiLayer, { autoAlpha: 0, opacity: 0, visibility: 'hidden' });
+          },
+        });
 
         const returnTimeline = gsap.timeline({
           scrollTrigger: {
@@ -490,38 +529,36 @@ export default function CinematicScrollController() {
           },
         });
 
-        /* Urvashi glides smoothly in from her established left alignment */
-        returnTimeline
-          .fromTo(urvashiLayer, {
-            autoAlpha: 0,
-            x: mobile ? '-28vw' : '-33vw',
-            y: mobile ? '20vh' : '22vh',
-            scale: mobile ? 0.78 : 0.84,
-            rotation: 0,
-          }, {
-            autoAlpha: 1,
-            x: mobile ? '-25vw' : '-30vw',
-            y: mobile ? '8vh' : '10vh',
-            scale: mobile ? 0.8 : 0.86,
-            duration: 1,
-            ease: 'power2.out',
-          })
-          .to(returnText, {
+        if (returnText) {
+          returnTimeline.to(returnText, {
             opacity: 1,
             y: -15,
-            duration: 0.4,
+            duration: 0.6,
             ease: 'power2.out',
-          }, 0.2);
+          });
+        }
       }
 
       /* ══════════════════════════════════════════════════════
-         09 — MOVE → SETTLE → POINT → REVEAL (STRICT SEQUENCE)
+         09 — LIFESTYLE EDITORIAL REVEAL (URVASHI REMOVED)
          ══════════════════════════════════════════════════════ */
       if (sLifestyle) {
         const revealContainer = sLifestyle.querySelector('.reveal-content-container') as HTMLElement;
 
+        /* Strictly keep Urvashi hidden */
+        ScrollTrigger.create({
+          trigger: sLifestyle,
+          start: 'top bottom',
+          onEnter: () => {
+            gsap.set(urvashiLayer, { autoAlpha: 0, opacity: 0, visibility: 'hidden' });
+          },
+          onEnterBack: () => {
+            gsap.set(urvashiLayer, { autoAlpha: 0, opacity: 0, visibility: 'hidden' });
+          },
+        });
+
         if (revealContainer) {
-          const msrTimeline = gsap.timeline({
+          const lifestyleTimeline = gsap.timeline({
             scrollTrigger: {
               trigger: sLifestyle,
               start: 'top 80%',
@@ -530,61 +567,16 @@ export default function CinematicScrollController() {
             },
           });
 
-          /* 1. MOVE (0% to 35%): Urvashi travels to lifestyle destination */
-          msrTimeline.to(urvashiLayer, {
-            autoAlpha: 1,
-            x: mobile ? '-22vw' : '-28vw',
-            y: mobile ? '-2vh' : '2vh',
-            scale: mobile ? 0.78 : 0.84,
-            rotation: 0,
-            duration: 0.35,
-            ease: 'power1.inOut',
-          });
-
-          /* 2. SETTLE (35% to 50%): Urvashi comes to a complete rest */
-          msrTimeline.to(urvashiLayer, {
-            x: mobile ? '-22vw' : '-28vw',
-            y: mobile ? '-2vh' : '2vh',
-            scale: mobile ? 0.78 : 0.84,
-            rotation: 0.5,
-            duration: 0.15,
-            ease: 'power2.out',
-          });
-
-          /* 3. POINT (50% to 60%): Arm gesture established towards lifestyle plate */
-          msrTimeline.to(urvashiLayer, {
-            rotation: -0.5,
-            scale: mobile ? 0.79 : 0.85,
-            duration: 0.1,
-            ease: 'power1.out',
-          });
-
-          /* 4. REVEAL (60% to 100%): Content emerges radially from her fingertip */
-          msrTimeline.to(revealContainer, {
+          lifestyleTimeline.to(revealContainer, {
             opacity: 1,
-            duration: 0.1,
-            ease: 'none',
-          }, 0.6);
-
-          msrTimeline.to(revealContainer, {
-            duration: 0.38,
+            duration: 0.5,
             ease: 'power2.out',
             onUpdate: function () {
-              if (urvashiWrapper && revealContainer) {
-                const coords = getFingertipCoordinates(urvashiWrapper, revealContainer);
-                const progress = (this.progress());
-                const radius = progress * 160;
-                revealContainer.style.clipPath = `circle(${radius}% at ${coords.x}% ${coords.y}%)`;
-              }
+              const progress = this.progress();
+              const radius = progress * 160;
+              revealContainer.style.clipPath = `circle(${radius}% at 50% 50%)`;
             },
-          }, 0.6);
-
-          /* Fade out Urvashi after the lifestyle content is fully established */
-          msrTimeline.to(urvashiLayer, {
-            autoAlpha: 0,
-            duration: 0.15,
-            ease: 'power2.in',
-          }, 0.92);
+          });
         }
       }
 
