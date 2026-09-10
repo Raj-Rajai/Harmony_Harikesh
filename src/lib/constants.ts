@@ -35,7 +35,8 @@ export const MEDIA = {
   campaignArtwork: '/media/Urvashi/Thumbnail.jpg',
   neonBackground: '/media/website-images/background-main.webp',
   urvashiPng: '/media/Urvashi/urvashi-scrolling.webp',
-  urvashiVideo: '/media/Urvashi/Urvashi_Rautela.mp4',
+  urvashiVideo:
+    'https://lmslhpm3dkciwcny.public.blob.vercel-storage.com/Urvashi_Rautela.mp4',
 
   towers: {
     front: '/media/website-images/hero-towers-front.jpg',
@@ -51,7 +52,8 @@ export const MEDIA = {
 
   campaigns: {
     rjKunal: {
-      video: '/media/videos/RJ Kunalbhai X Harmony harikesh.mp4',
+      video:
+        'https://lmslhpm3dkciwcny.public.blob.vercel-storage.com/RJ%20Kunalbhai%20X%20Harmony%20harikesh.mp4',
       hero: '/media/campaign-images/RJ_Kunalbhai_X_Harmony__010.0s__presenter_close.jpg',
       stills: [
         '/media/campaign-images/RJ_Kunalbhai_X_Harmony__002.0s__presenter_exterior.jpg',
@@ -64,7 +66,8 @@ export const MEDIA = {
       ],
     },
     nidhi: {
-      video: '/media/videos/Harmony Harikesh-Nidhi-1.mp4',
+      video:
+        'https://lmslhpm3dkciwcny.public.blob.vercel-storage.com/Harmony%20Harikesh-Nidhi-1.mp4',
       hero: '/media/campaign-images/Harmony_Harikesh_Nidhi__010.0s__presenter_full.jpg',
       stills: [
         '/media/campaign-images/Harmony_Harikesh_Nidhi__002.0s__presenter_living_room.jpg',
@@ -81,7 +84,8 @@ export const MEDIA = {
       ],
     },
     dhruvik: {
-      video: '/media/videos/Harmony Harikesh X Dhruvik Parekh.mp4',
+      video:
+        'https://lmslhpm3dkciwcny.public.blob.vercel-storage.com/Harmony%20Harikesh%20X%20Dhruvik%20Parekh.mp4',
     },
   },
 } as const;
